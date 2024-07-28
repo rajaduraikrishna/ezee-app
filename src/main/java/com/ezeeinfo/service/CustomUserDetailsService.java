@@ -2,10 +2,12 @@ package com.ezeeinfo.service;
 
 import com.ezeeinfo.issuemanager.IssueManagerManager;
 import com.ezeeinfo.issuemanager.model.AppUser;
+import com.ezeeinfo.issuemanager.model.Roles;
 import com.ezeeinfo.issuemanager.model.UserRoles;
 import com.ezeeinfo.issuemanager.store.AppUserStore;
 import com.ezeeinfo.issuemanager.store.RolesStore;
 import com.ezeeinfo.issuemanager.store.UserRolesStore;
+import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,7 +45,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         AppUser appUser = null;
         List<UserRoles> roles = null;
         try {
-            appUser = appUserStore.select(AppUserStore.username().eq(username)).execute().getFirst();
+            List<AppUser> appUsers = appUserStore.select(AppUserStore.username().eq(username)).execute();
+            if(!Collections.isEmpty(appUsers)) {
+                appUser = appUsers.get(0);
+            }
             roles = userRolesStore.select(UserRolesStore.userId().eq(appUser.getId())).execute();
 
         } catch (SQLException e) {
@@ -60,5 +65,26 @@ public class CustomUserDetailsService implements UserDetailsService {
                 throw new RuntimeException(e);
             }
         }).collect(Collectors.toList());
+    }
+
+    public AppUser registerUser(AppUser user, String role) {
+        AppUser createdUser = null;
+        try {
+            List<AppUser> foundUsers = appUserStore.select(AppUserStore.username().eq(user.getUsername())).execute();
+            if(!Collections.isEmpty(foundUsers)) {
+                return foundUsers.get(0);
+            }
+            createdUser = appUserStore.insert().values(user).returning();
+            List<Roles> roles = rolesStore.select(RolesStore.name().eq(role)).execute();
+            if(!Collections.isEmpty(roles)) {
+                UserRoles userRoles = new UserRoles();
+                userRoles.setUserId(createdUser.getId());
+                userRoles.setRoleId(roles.get(0).getId());
+                userRolesStore.insert().values(userRoles).execute();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return createdUser;
     }
 }

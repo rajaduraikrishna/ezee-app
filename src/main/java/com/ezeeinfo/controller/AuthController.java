@@ -1,13 +1,12 @@
 package com.ezeeinfo.controller;
 
-import com.ezeeinfo.dao.AppUserRepository;
-import com.ezeeinfo.dao.RoleRepository;
+
 import com.ezeeinfo.dto.AuthResponseDto;
 import com.ezeeinfo.dto.LoginDto;
 import com.ezeeinfo.dto.RegisterDto;
-import com.ezeeinfo.model.AppUser;
-import com.ezeeinfo.model.Role;
+import com.ezeeinfo.issuemanager.model.AppUser;
 import com.ezeeinfo.security.JwtGenerator;
+import com.ezeeinfo.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,23 +20,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private AppUserRepository appUserRepository;
-    private RoleRepository roleRepository;
+    private CustomUserDetailsService customUserDetailsService;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtGenerator jwtGenerator;
     @Autowired
-    public AuthController(AppUserRepository appUserRepository,
-                          RoleRepository roleRepository, PasswordEncoder passwordEncoder,
+    public AuthController(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder,
                           AuthenticationManager authenticationManager, JwtGenerator jwtGenerator) {
-        this.appUserRepository = appUserRepository;
-        this.roleRepository = roleRepository;
+        this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager=authenticationManager;
         this.jwtGenerator=jwtGenerator;
@@ -46,18 +40,10 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
 
-        if (appUserRepository.existsByUsername(registerDto.getUsername())) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
-        }
-
         AppUser appUser = new AppUser();
         appUser.setUsername(registerDto.getUsername());
-        appUser.setPassword(passwordEncoder.encode((registerDto.getPassword())));
-
-        Role roles = roleRepository.findByName(registerDto.getRole()).get();
-        appUser.setRoles(Collections.singletonList(roles));
-
-        appUserRepository.save(appUser);
+        appUser.setPassword(registerDto.getPassword());
+        customUserDetailsService.registerUser(appUser, registerDto.getRole());
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }

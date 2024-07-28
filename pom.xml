@@ -8,10 +8,10 @@
 		<version>3.2.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.kale</groupId>
-	<artifactId>jwt_tutorial</artifactId>
+	<groupId>com.ezeeinfo</groupId>
+	<artifactId>ezee-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jwt_tutorial</name>
+	<name>ezee app</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
