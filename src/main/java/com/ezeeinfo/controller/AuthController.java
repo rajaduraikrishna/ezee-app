@@ -15,10 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,9 +35,15 @@ public class AuthController {
         this.authenticationManager=authenticationManager;
         this.jwtGenerator=jwtGenerator;
     }
+    @GetMapping("me")
+    public final ResponseEntity<Principal> me(
+            final Principal principal) {
+
+        return ResponseEntity.ok().body(principal);
+    }
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
+    public ResponseEntity<String> register(@RequestHeader("X-PrivateTenant") String tenantid, @RequestBody RegisterDto registerDto) {
 
         AppUser appUser = new AppUser();
         appUser.setUsername(registerDto.getUsername());
@@ -49,12 +54,12 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponseDto> login(@RequestHeader("X-PrivateTenant") String tenantid, @RequestBody LoginDto loginDto) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
+        String token = jwtGenerator.generateToken(authentication,tenantid);
         return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
 }

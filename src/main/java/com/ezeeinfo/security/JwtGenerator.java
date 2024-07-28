@@ -21,7 +21,7 @@ public class JwtGenerator {
     public long JWT_EXPIRATION = 70000;
     private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, final String tenantId) {
         String username = authentication.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION);
@@ -33,6 +33,7 @@ public class JwtGenerator {
         // Build the token with roles included in claims
         String token = Jwts
                 .builder()
+                .setAudience(tenantId)
                 .setSubject(username)
                 .claim("roles", roles) // Inclusion of roles in claims
                 .setIssuedAt(new Date())
@@ -59,5 +60,10 @@ public class JwtGenerator {
     public List<String> getRolesFromJWT(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims.get("roles", List.class);
+    }
+
+    public Object getAudianceFromJWT(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        return claims.getAudience();
     }
 }
