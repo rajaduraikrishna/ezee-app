@@ -24,15 +24,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * CustomUserDetailsService class
+ * CustomUserDetailsService class.
  * UserDetailsService interface
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    /**
+     * AppUserStore declaration.
+     */
 
     private final AppUserStore appUserStore;
+    /**
+     * UserRolesStore declaration.
+     */
     private final UserRolesStore userRolesStore;
+    /**
+     * RoleStore declartion.
+     */
 
     private final RolesStore rolesStore;
 

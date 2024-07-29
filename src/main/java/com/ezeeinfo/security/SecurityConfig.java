@@ -14,29 +14,44 @@ import org.springframework.security.web.SecurityFilterChain;
 
 
 /**
- * SecurityConfig class
+ * SecurityConfig class.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    /**
+     * Admin initialization.
+     */
     public static final String ADMIN = "admin";
+    /**
+     * user intialization.
+     */
     public static final String USER = "user";
-
+    /**
+     * JwtAuthEntryPoint declaratioin.
+     */
     private final JwtAuthEntryPoint authEntryPoint;
 
-    public SecurityConfig(JwtAuthEntryPoint authEntryPoint) {
-        this.authEntryPoint = authEntryPoint;
+    /**
+     * SecurityConfig method.
+     * @param point
+     */
+
+    public SecurityConfig(final JwtAuthEntryPoint point) {
+        this.authEntryPoint = point;
     }
 
     /**
-     *
+     * SecurityFilterChain method.
      * @param http
-     * @return
+     * @return build
      * @throws Exception
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authz) -> authz.requestMatchers("/api/**")
+    public SecurityFilterChain filterChain(final HttpSecurity http)
+            throws Exception {
+        http.authorizeHttpRequests((authz) ->
+                authz.requestMatchers("/api/**")
                 .permitAll()
                 .requestMatchers(HttpMethod.GET)
                 .permitAll()
@@ -49,15 +64,17 @@ public class SecurityConfig {
                 .anyRequest()
                 .authenticated());
 
-        http.exceptionHandling((exceptions) -> exceptions.authenticationEntryPoint(authEntryPoint));
-        http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.csrf(c -> c.disable());
+ http.exceptionHandling((exceptions) ->
+         exceptions.authenticationEntryPoint(authEntryPoint));
+http.sessionManagement(sess ->
+        sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+  http.csrf(c -> c.disable());
         return http.build();
     }
 
     /**
-     *
-     * @return
+     * PasswordEncoder method.
+     * @return password
      */
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -65,20 +82,21 @@ public class SecurityConfig {
     }
 
     /**
-     *
+     * AuthenticationManager method.
      * @param authenticationConfiguration
-     * @return
+     * @return manager
      * @throws Exception
      */
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+    public AuthenticationManager authenticationManager(final
+      AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+ return authenticationConfiguration.getAuthenticationManager();
     }
 
     /**
-     *
-     * @return
+     * JwtAuthenticationFilter method.
+     * @return filter
      */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
