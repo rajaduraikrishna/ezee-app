@@ -51,9 +51,9 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Autowired
     public CustomUserDetailsService(final DataSource dataSource) {
-    appUserStore = IssueManagerManager.getManager(dataSource).getAppUserStore();
-    userRolesStore = IssueManagerManager.getManager(dataSource).getUserRolesStore();
-    rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
+appUserStore = IssueManagerManager.getManager(dataSource).getAppUserStore();
+userRolesStore = IssueManagerManager.getManager(dataSource).getUserRolesStore();
+rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
     }
 
     /**
@@ -71,7 +71,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         try {
             List<AppUser> appUsers =
          appUserStore.select(AppUserStore.username().eq(username)).execute();
-            if(!Collections.isEmpty(appUsers)) {
+            if (!Collections.isEmpty(appUsers)) {
                 appUser = appUsers.get(0);
             }
             roles = userRolesStore.select(UserRolesStore.userId().eq(appUser.getId())).execute();
@@ -107,12 +107,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         AppUser createdUser = null;
         try {
             List<AppUser> foundUsers = appUserStore.select(AppUserStore.username().eq(user.getUsername())).execute();
-            if(!Collections.isEmpty(foundUsers)) {
+            if (!Collections.isEmpty(foundUsers)) {
                 return foundUsers.get(0);
             }
             createdUser = appUserStore.insert().values(user).returning();
             List<Roles> roles = rolesStore.select(RolesStore.name().eq(role)).execute();
-            if(!Collections.isEmpty(roles)) {
+            if (!Collections.isEmpty(roles)) {
                 UserRoles userRoles = new UserRoles();
                 userRoles.setUserId(createdUser.getId());
                 userRoles.setRoleId(roles.get(0).getId());
