@@ -1,0 +1,57 @@
+@base_url = http://localhost:8080
+
+POST {{base_url}}/api/auth/register
+content-type: application/json
+X-PrivateTenant: Parvin
+
+{
+    "username": "raja",
+    "password": "password",
+    "role": "user"
+}
+
+###
+# @name login
+
+POST {{base_url}}/api/auth/login
+content-type: application/json
+X-PrivateTenant: Parvin
+
+
+{
+    "username": "raja",
+    "password": "password"
+}
+
+
+###
+# @name createdIssue
+POST {{base_url}}/api/issues
+content-type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+{
+    "title": "Gurukulam CSC book display issue",
+    "description": "will updated the detailed status",
+    "status": "NEW"
+}
+
+###
+PUT {{base_url}}/api/issues/1
+content-type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+{
+    "id": "1",
+    "title": "new issue on tracket for parvin travels",
+    "description": "will updated the detailed status",
+    "status": "IN PROGRESS"
+}
+
+###
+
+GET {{base_url}}/api/issues
+Authorization: Bearer {{login.response.body.accessToken}}
+Content-Type: application/json
+
