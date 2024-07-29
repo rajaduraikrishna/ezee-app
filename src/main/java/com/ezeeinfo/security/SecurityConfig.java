@@ -28,7 +28,7 @@ public class SecurityConfig {
      */
     public static final String USER = "user";
     /**
-     * JwtAuthEntryPoint declaratioin.
+     * JwtAuthEntryPoint declaration.
      */
     private final JwtAuthEntryPoint authEntryPoint;
 
