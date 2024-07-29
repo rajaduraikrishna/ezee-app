@@ -39,9 +39,6 @@ public class CustomUserDetailsService implements UserDetailsService {
      * UserRolesStore declaration.
      */
     private final UserRolesStore userRolesStore;
-    /**
-     * RoleStore declartion.
-     */
 
     /**
      * RolesStore declaration.
@@ -66,13 +63,14 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
 
         AppUser appUser = null;
         List<UserRoles> roles = null;
         try {
-            List<AppUser> appUsers = appUserStore.select(AppUserStore.username().eq(username)).execute();
+            List<AppUser> appUsers =
+         appUserStore.select(AppUserStore.username().eq(username)).execute();
             if(!Collections.isEmpty(appUsers)) {
                 appUser = appUsers.get(0);
             }
