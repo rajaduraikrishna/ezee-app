@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * JwtAuthEntryPoint class
+ * JwtAuthEntryPoint class.
  * AuthenticationEntryPoint interface
  */
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     /**
-     *
+     * commence method.
      * @param request
      * @param response
      * @param authException
@@ -24,8 +24,11 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
      * @throws ServletException
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+    public void commence(final HttpServletRequest request,
+                         final HttpServletResponse response,
+                         final AuthenticationException authException)
+            throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                authException.getMessage());
     }
 }

@@ -55,7 +55,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @throws IOException
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request,
+           final HttpServletResponse response,
+           final FilterChain filterChain)
             throws ServletException, IOException {
         String token = getJWTFromRequest(request);
         if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
@@ -88,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @return JWTToken string from the request
      */
 
-    private String getJWTFromRequest(HttpServletRequest request) {
+    private String getJWTFromRequest(final HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken)
                 && bearerToken.startsWith("Bearer ")) {
