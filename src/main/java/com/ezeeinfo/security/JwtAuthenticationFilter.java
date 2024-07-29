@@ -20,24 +20,34 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * JwtAuthenticationFilter class.
- * OncePerRequestFilter class
+ * This is the JWT authentication filter.
+ *
  */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     /**
-     * tokenGenerator declaration.
+     * Constant for substring index.
+     */
+    private static final int SUBSTRING_INDEX = 7;
+    /**
+     * JWT token generator.
      */
     @Autowired
     private JwtGenerator tokenGenerator;
     /**
-     * customUserDetailsService declaration.
+     * Customer user details service.
      */
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     /**
-     * doFilterInternal method.
+     * Gets the JWT token from the request. if the token is present it
+     * validates the token with the help of JWT token generator.
+     * Next extracts the username and roles from the token. Extracts
+     * the role details. User details are fetched from
+     * CustomerUserDetailsService.
+     * Lastly creates the UserPasswordAuthenticationToken with the
+     * required details from JWT token and sets the same into
+     * SecurityContextHolder
      * @param request
      * @param response
      * @param filterChain
@@ -45,43 +55,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @throws IOException
      */
     @Override
-    protected void doFilterInternal(final HttpServletRequest request,
-                                    final HttpServletResponse response,
-                                    final FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = getJWTFromRequest(request);
         if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
             String username = tokenGenerator.getUsernameFromJWT(token);
 
             List<String> roles = tokenGenerator.getRolesFromJWT(token);
-   List<GrantedAuthority> authorities =
-     roles.stream().map(role -> new SimpleGrantedAuthority(role.replace("ROLE_",
-        ""))).collect(Collectors.toList());
+            List<GrantedAuthority> authorities = roles.stream()
+                    .map(role -> new SimpleGrantedAuthority(
+                            role.replace("ROLE_", "")))
+                    .collect(Collectors.toList());
 
- UserDetails userDetails =
-  customUserDetailsService.loadUserByUsername(username);
-   UsernamePasswordAuthenticationToken authenticationToken =
-    new UsernamePasswordAuthenticationToken(userDetails,
-  tokenGenerator.getAudianceFromJWT(token), authorities);
-  authenticationToken.setDetails(new
- WebAuthenticationDetailsSource().buildDetails(request));
-   SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            UserDetails userDetails = customUserDetailsService
+                    .loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(userDetails,
+                            tokenGenerator.getAudianceFromJWT(token),
+                            authorities);
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource()
+                    .buildDetails(request));
+            SecurityContextHolder.getContext().
+                    setAuthentication(authenticationToken);
 
         }
         filterChain.doFilter(request, response);
     }
 
     /**
-     * getJWTFromRequest method.
+     *
      * @param request
-     * @return beartoken
+     * @return JWTToken string from the request
      */
 
-    private String getJWTFromRequest(final HttpServletRequest request) {
+    private String getJWTFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken)
-          && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+                && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(SUBSTRING_INDEX,
+                    bearerToken.length());
         }
         return null;
     }
