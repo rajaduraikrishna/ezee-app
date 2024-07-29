@@ -1,50 +1,57 @@
 package com.ezeeinfo.dto;
 
+
 /**
- * AuthResponseDto class
+ * AuthResponseDto class.
  */
 public class AuthResponseDto {
+
+    /**
+     * accessToken.
+     */
     private String accessToken;
+    /**
+     * tokenType initialization.
+     */
     private String tokenType = "Bearer ";
 
     /**
-     *
-     * @return
+     * getAccessToken method.
+     * @return accessToken
      */
     public String getAccessToken() {
         return accessToken;
     }
 
     /**
-     *
-     * @param accessToken
+     * SetAccessToken method.
+     * @param token
      */
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccessToken(final String token) {
+        this.accessToken = token;
     }
-
     /**
-     *
-     * @return
+     * getTokenType method.
+     * @return tokenType
      */
     public String getTokenType() {
         return tokenType;
     }
 
     /**
-     *
-     * @param tokenType
+     * setTokenType method.
+     * @param type
      */
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public void setTokenType(final String type) {
+        this.tokenType = type;
     }
 
     /**
-     *
-     * @param accessToken
+     * AuthResponseDto constructor.
+     * @param token
      */
-    public AuthResponseDto(String accessToken) {
-        this.accessToken = accessToken;
+    public AuthResponseDto(final String token) {
+        this.accessToken = token;
     }
 }

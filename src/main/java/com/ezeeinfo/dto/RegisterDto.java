@@ -2,32 +2,41 @@ package com.ezeeinfo.dto;
 
 
 /**
- * RegisterDto class
+ * RegisterDto class.
  */
 public class RegisterDto {
+    /**
+     * username declaration using String.
+     */
     private String username;
+    /**
+     * password declaration using String.
+     */
     private String password;
+    /**
+     * role declaration using String.
+     */
     private String role;
 
     /**
-     *
-     * @return
+     * getUsername method.
+     * @return username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     *
-     * @param username
+     * setUsername method.
+     * @param user
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(final String user) {
+        this.username = user;
     }
 
     /**
-     *
-     * @return
+     * getPassword method.
+     * @return password
      */
 
     public String getPassword() {
@@ -35,26 +44,26 @@ public class RegisterDto {
     }
 
     /**
-     *
-     * @param password
+     * setPassword method.
+     * @param pwd
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(final String pwd) {
+        this.password = pwd;
     }
 
     /**
-     *
-     * @return
+     * getRole method.
+     * @return role
      */
-    public String getRole() {
+    public final String getRole() {
         return role;
     }
 
     /**
-     *
-     * @param role
+     * setRole method.
+     * @param roles
      */
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(final String roles) {
+        this.role = roles;
     }
 }

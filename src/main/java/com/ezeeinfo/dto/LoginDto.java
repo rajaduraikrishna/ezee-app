@@ -1,42 +1,49 @@
 package com.ezeeinfo.dto;
 
+
 /**
- * LoginDto class
+ * LoginDto class.
  */
 public class LoginDto {
+    /**
+     * username declaration using String.
+     */
     private String username;
+    /**
+     * password declaration using String.
+     */
     private String password;
 
     /**
-     *
-     * @return
+     * getUsername method.
+     * @return username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     *
-     * @param username
+     * setUsername method.
+     * @param userName
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(final String userName) {
+        this.username = userName;
     }
 
     /**
-     *
-     * @return
+     * getPassword method.
+     * @return password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     *
-     * @param password
+     * setPassword method.
+     * @param pwd
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(final String pwd) {
+        this.password = pwd;
     }
 
 }

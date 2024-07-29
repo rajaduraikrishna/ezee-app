@@ -1,15 +1,20 @@
 
+
 package com.ezeeinfo.config;
+
+
 import com.ezeeinfo.issuemanager.IssueManagerManager;
 import com.ezeeinfo.issuemanager.service.IssueService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
+
 /**
  * IssueConfig class.
  */
 @Configuration
 public class IssueConfig {
+
     /**
      *The issuseManager.
      * @param dataSource

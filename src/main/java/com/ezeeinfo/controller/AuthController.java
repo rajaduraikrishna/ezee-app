@@ -15,7 +15,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.security.Principal;
 
@@ -25,73 +31,90 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+
     /**
-     * CustomUserDetailsService.
+     * CustomUserDetailService class and customUserDetailsService variable.
      */
-
     private CustomUserDetailsService customUserDetailsService;
+    /**
+     *  PasswordEncoder class and passwordEncoder.
+     */
     private PasswordEncoder passwordEncoder;
+    /**
+     * AuthenticationManager class and authenticationManager variable.
+     */
     private AuthenticationManager authenticationManager;
+    /**
+     *  JwtGenerator class and jwtGenerator variable.
+     */
     private JwtGenerator jwtGenerator;
-
     /**
      * The AuthController useful for login and register.
-     * @param customUserDetailsService
-     * @param passwordEncoder
-     * @param authenticationManager
-     * @param jwtGenerator
+     * @param detailsService
+     * @param password
+     * @param authentication
+     * @param generator
      */
     @Autowired
-    public AuthController(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder,
-                          AuthenticationManager authenticationManager, JwtGenerator jwtGenerator) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager=authenticationManager;
-        this.jwtGenerator=jwtGenerator;
+    public AuthController(final CustomUserDetailsService detailsService,
+                          final PasswordEncoder password,
+                          final AuthenticationManager authentication,
+                          final JwtGenerator generator) {
+        this.customUserDetailsService = detailsService;
+        this.passwordEncoder = password;
+        this.authenticationManager = authentication;
+        this.jwtGenerator = generator;
+        return;
     }
 
     /**
      * The Mapping.
      * @param principal
-     * @return
+     * @return principal
      */
     @GetMapping("me")
     public final ResponseEntity<Principal> me(
             final Principal principal) {
-
         return ResponseEntity.ok().body(principal);
     }
 
     /**
      * It is a register.
-     * @param tenantid
-     * @param registerDto
-     * @return
+     * @param tid
+     * @param dto
+     * @return user
      */
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestHeader("X-PrivateTenant") String tenantid, @RequestBody RegisterDto registerDto) {
+    public ResponseEntity<String> register(@RequestHeader("X-PrivateTenant")
+                                               final String tid,
+                                           @RequestBody final RegisterDto dto) {
 
         AppUser appUser = new AppUser();
-        appUser.setUsername(registerDto.getUsername());
-        appUser.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        customUserDetailsService.registerUser(appUser, registerDto.getRole());
+        appUser.setUsername(dto.getUsername());
+        appUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        customUserDetailsService.registerUser(appUser, dto.getRole());
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
     /**
      * It is login.
-     * @param tenantid
-     * @param loginDto
-     * @return
+     * @param tid
+     * @param dto
+     * @return login
      */
     @PostMapping("login")
-    public ResponseEntity<AuthResponseDto> login(@RequestHeader("X-PrivateTenant") String tenantid, @RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponseDto>
+                         login(@RequestHeader("X-PrivateTenant")
+                             final String tid,
+                             @RequestBody final LoginDto dto) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+                new UsernamePasswordAuthenticationToken(dto.getUsername(),
+                                dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication,tenantid);
+        String token = jwtGenerator.generateToken(authentication, tid);
         return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
 }
