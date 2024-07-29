@@ -40,7 +40,6 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     private final UserRolesStore userRolesStore;
 
-
     /**
      * RolesStore declaration.
      */
@@ -63,11 +62,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * UserDetails method.
      * @param username
-     * @return user details
+     * @return
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(final String username)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
         AppUser appUser = null;
