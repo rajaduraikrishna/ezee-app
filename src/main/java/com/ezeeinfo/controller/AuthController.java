@@ -47,7 +47,7 @@ public class AuthController {
 
         AppUser appUser = new AppUser();
         appUser.setUsername(registerDto.getUsername());
-        appUser.setPassword(registerDto.getPassword());
+        appUser.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         customUserDetailsService.registerUser(appUser, registerDto.getRole());
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JwtTutorialApplication {
+public class EazeeInfoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JwtTutorialApplication.class, args);
+		SpringApplication.run(EazeeInfoApplication.class, args);
 	}
 
 }

@@ -36,14 +36,14 @@ public class IssueController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdIssue);
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     public final ResponseEntity<Issue> update(
+            @PathVariable Long id,
             final Authentication principal,
-            final @RequestHeader("issueId")  Long issueId,
             final @RequestBody Issue issue)
             throws SQLException, IOException {
         issue.setTenant(principal.getCredentials().toString());
-        Optional updated = issueService.update(principal.getName(), issue.getId(), issue);
+        Optional updated = issueService.update(principal.getName(), id, issue);
         return ResponseEntity.status(HttpStatus.OK).body((Issue)updated.get());
     }
 
