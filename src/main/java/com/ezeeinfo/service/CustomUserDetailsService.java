@@ -43,28 +43,31 @@ public class CustomUserDetailsService implements UserDetailsService {
      * RoleStore declartion.
      */
 
+    /**
+     * RolesStore declaration.
+     */
     private final RolesStore rolesStore;
 
     /**
-     *
+     * CustomUserDetailsService method.
      * @param dataSource
      */
     @Autowired
-    public CustomUserDetailsService(final DataSource dataSource)
-    {
-        appUserStore = IssueManagerManager.getManager(dataSource).getAppUserStore();
-        userRolesStore = IssueManagerManager.getManager(dataSource).getUserRolesStore();
-        rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
+    public CustomUserDetailsService(final DataSource dataSource) {
+    appUserStore = IssueManagerManager.getManager(dataSource).getAppUserStore();
+    userRolesStore = IssueManagerManager.getManager(dataSource).getUserRolesStore();
+    rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
     }
 
     /**
-     *
+     * UserDetails method.
      * @param username
      * @return
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
 
         AppUser appUser = null;
         List<UserRoles> roles = null;
