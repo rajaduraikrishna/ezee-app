@@ -9,8 +9,20 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * JwtAuthEntryPoint class
+ * AuthenticationEntryPoint interface
+ */
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
+    /**
+     *
+     * @param request
+     * @param response
+     * @param authException
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {

@@ -23,6 +23,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * CustomUserDetailsService class
+ * UserDetailsService interface
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -31,6 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRolesStore userRolesStore;
 
     private final RolesStore rolesStore;
+
+    /**
+     *
+     * @param dataSource
+     */
     @Autowired
     public CustomUserDetailsService(final DataSource dataSource)
     {
@@ -39,6 +48,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -57,6 +72,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new User(appUser.getUsername(), appUser.getPassword(), mapRolesToAuthorities(roles));
     }
 
+    /**
+     *
+     * @param roles
+     * @return
+     */
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<UserRoles> roles) {
         return roles.stream().map(role -> {
             try {
@@ -67,6 +87,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param user
+     * @param role
+     * @return
+     */
     public AppUser registerUser(AppUser user, String role) {
         AppUser createdUser = null;
         try {

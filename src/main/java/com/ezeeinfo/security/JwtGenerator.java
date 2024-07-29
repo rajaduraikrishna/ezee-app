@@ -15,12 +15,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * JwtGenerator class
+ */
 @Component
 public class JwtGenerator {
 
     public long JWT_EXPIRATION = 70000;
     private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
+    /**
+     *
+     * @param authentication
+     * @param tenantId
+     * @return
+     */
     public String generateToken(Authentication authentication, final String tenantId) {
         String username = authentication.getName();
         Date currentDate = new Date();
@@ -42,10 +51,22 @@ public class JwtGenerator {
         return token;
     }
 
+    /**
+     *
+     * @param token
+     * @return
+     */
+
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
 
     public boolean validateToken(String token) {
         try {
@@ -57,11 +78,22 @@ public class JwtGenerator {
         }
     }
 
+    /**
+     *
+     * @param token
+     * @return
+     */
+
     public List<String> getRolesFromJWT(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims.get("roles", List.class);
     }
 
+    /**
+     *
+     * @param token
+     * @return
+     */
     public Object getAudianceFromJWT(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         return claims.getAudience();

@@ -19,14 +19,28 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+/**
+ * AuthController class useful for register and login.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    /**
+     * CustomUserDetailsService.
+     */
 
     private CustomUserDetailsService customUserDetailsService;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtGenerator jwtGenerator;
+
+    /**
+     * The AuthController useful for login and register.
+     * @param customUserDetailsService
+     * @param passwordEncoder
+     * @param authenticationManager
+     * @param jwtGenerator
+     */
     @Autowired
     public AuthController(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder,
                           AuthenticationManager authenticationManager, JwtGenerator jwtGenerator) {
@@ -35,6 +49,12 @@ public class AuthController {
         this.authenticationManager=authenticationManager;
         this.jwtGenerator=jwtGenerator;
     }
+
+    /**
+     * The Mapping.
+     * @param principal
+     * @return
+     */
     @GetMapping("me")
     public final ResponseEntity<Principal> me(
             final Principal principal) {
@@ -42,6 +62,12 @@ public class AuthController {
         return ResponseEntity.ok().body(principal);
     }
 
+    /**
+     * It is a register.
+     * @param tenantid
+     * @param registerDto
+     * @return
+     */
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestHeader("X-PrivateTenant") String tenantid, @RequestBody RegisterDto registerDto) {
 
@@ -53,6 +79,12 @@ public class AuthController {
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
+    /**
+     * It is login.
+     * @param tenantid
+     * @param loginDto
+     * @return
+     */
     @PostMapping("login")
     public ResponseEntity<AuthResponseDto> login(@RequestHeader("X-PrivateTenant") String tenantid, @RequestBody LoginDto loginDto) {
 
