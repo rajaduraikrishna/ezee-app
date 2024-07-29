@@ -74,18 +74,20 @@ rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
             if (!Collections.isEmpty(appUsers)) {
                 appUser = appUsers.get(0);
             }
-            roles = userRolesStore.select(UserRolesStore.userId().eq(appUser.getId())).execute();
+roles = userRolesStore.select(UserRolesStore.
+        userId().eq(appUser.getId())).execute();
 
         } catch (SQLException e) {
             throw new UsernameNotFoundException("Username not found");
         }
-        return new User(appUser.getUsername(), appUser.getPassword(), mapRolesToAuthorities(roles));
+        return new User(appUser.getUsername(),
+         appUser.getPassword(), mapRolesToAuthorities(roles));
     }
 
     /**
      *
      * @param roles
-     * @return
+     * @return sga
      */
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<UserRoles> roles) {
         return roles.stream().map(role -> {
