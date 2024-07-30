@@ -26,7 +26,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
+			<artifactId>jjwt-api</artifactId>
 			<version>${jjwt-jackson.version}</version>
 		</dependency>
 		<dependency>

@@ -32,8 +32,22 @@ Authorization: Bearer {{login.response.body.accessToken}}
 
 
 {
-    "title": "Gurukulam CSC book display issue",
-    "description": "will updated the detailed status",
+    "title": "Booking details page is not showing the insurance details",
+    "description": "I have opted for the insurance but, it is not showing in the UI",
+    "status": "NEW"
+}
+
+
+###
+# @name createdIssue
+POST {{base_url}}/api/issues
+content-type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+{
+    "title": "Not able to login to the UI",
+    "description": "when i click on login it shows blank page",
     "status": "NEW"
 }
 

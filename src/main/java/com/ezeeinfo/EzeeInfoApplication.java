@@ -16,12 +16,12 @@ import java.sql.SQLException;
  * The type Application.
  */
 @SpringBootApplication
-public class EazeeInfoApplication {
+public class EzeeInfoApplication {
     /**
      * Logger.
      */
     private final Logger logger =
-            LoggerFactory.getLogger(EazeeInfoApplication.class);
+            LoggerFactory.getLogger(EzeeInfoApplication.class);
 
     /**
      * Main method of this application.
@@ -29,7 +29,7 @@ public class EazeeInfoApplication {
      * @param args the args
      */
     public static void main(final String[] args) {
-        SpringApplication.run(EazeeInfoApplication.class, args);
+        SpringApplication.run(EzeeInfoApplication.class, args);
     }
 
     /**
