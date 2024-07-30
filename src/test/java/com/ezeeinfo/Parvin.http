@@ -52,14 +52,14 @@ Authorization: Bearer {{login.response.body.accessToken}}
 }
 
 ###
-PUT {{base_url}}/api/issues/1
+PUT {{base_url}}/api/issues/11
 content-type: application/json
 Authorization: Bearer {{login.response.body.accessToken}}
 
 {
-    "id": "1",
-    "title": "new issue on tracket for parvin travels",
-    "description": "will updated the detailed status",
+    "id": "11",
+    "title": "Not able to login to the UI",
+    "description": "when i click on login it shows blank page",
     "status": "IN PROGRESS"
 }
 

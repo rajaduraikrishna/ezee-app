@@ -38,14 +38,27 @@ Authorization: Bearer {{login.response.body.accessToken}}
 }
 
 ###
-PUT {{base_url}}/api/issues/119
+# @name createdIssue
+POST {{base_url}}/api/issues
+content-type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+{
+    "title": "Booking history is not displaying my old bookings",
+    "description": "UI is blank when i try to see my old bookings",
+    "status": "NEW"
+}
+
+###
+PUT {{base_url}}/api/issues/9
 content-type: application/json
 Authorization: Bearer {{login.response.body.accessToken}}
 
 {
-    "id": "119",
-    "title": "new issue on tracket for MRT travels",
-    "description": "will updated the detailed status",
+    "id": "9",
+    "title": "Booking history is not displaying my old bookings",
+    "description": "UI is blank when i try to see my old bookings",
     "status": "IN PROGRESS"
 }
 
