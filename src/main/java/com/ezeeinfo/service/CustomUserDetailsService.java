@@ -51,12 +51,9 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Autowired
     public CustomUserDetailsService(final DataSource dataSource) {
-        appUserStore = IssueManagerManager.getManager(dataSource)
-                .getAppUserStore();
-        userRolesStore = IssueManagerManager.getManager(dataSource)
-                .getUserRolesStore();
-        rolesStore = IssueManagerManager.getManager(dataSource)
-                .getRolesStore();
+appUserStore = IssueManagerManager.getManager(dataSource).getAppUserStore();
+userRolesStore = IssueManagerManager.getManager(dataSource).getUserRolesStore();
+rolesStore = IssueManagerManager.getManager(dataSource).getRolesStore();
     }
 
     /**
@@ -72,32 +69,28 @@ public class CustomUserDetailsService implements UserDetailsService {
         AppUser appUser = null;
         List<UserRoles> roles = null;
         try {
-            List<AppUser> appUsers = appUserStore.select(
-                    AppUserStore.username().eq(username)).execute();
+            List<AppUser> appUsers =
+         appUserStore.select(AppUserStore.username().eq(username)).execute();
             if (!Collections.isEmpty(appUsers)) {
                 appUser = appUsers.get(0);
             }
-            roles = userRolesStore.select(UserRolesStore.userId()
-                    .eq(appUser.getId())).execute();
+            roles = userRolesStore.select(UserRolesStore.userId().eq(appUser.getId())).execute();
 
         } catch (SQLException e) {
             throw new UsernameNotFoundException("Username not found");
         }
-        return new User(appUser.getUsername(), appUser.getPassword(),
-                mapRolesToAuthorities(roles));
+        return new User(appUser.getUsername(), appUser.getPassword(), mapRolesToAuthorities(roles));
     }
 
     /**
      *
      * @param roles
-     * @return collection of granted authority
+     * @return
      */
-    private Collection<GrantedAuthority> mapRolesToAuthorities(
-            final List<UserRoles> roles) {
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<UserRoles> roles) {
         return roles.stream().map(role -> {
             try {
-                return new SimpleGrantedAuthority(rolesStore
-                        .select(role.getRoleId()).get().getName());
+                return new SimpleGrantedAuthority(rolesStore.select(role.getRoleId()).get().getName());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -108,20 +101,17 @@ public class CustomUserDetailsService implements UserDetailsService {
      *
      * @param user
      * @param role
-     * @return AppUser
+     * @return
      */
-    public AppUser registerUser(final AppUser user, final String role) {
+    public AppUser registerUser(AppUser user, String role) {
         AppUser createdUser = null;
         try {
-            List<AppUser> foundUsers = appUserStore
-                    .select(AppUserStore.username().eq(user.getUsername()))
-                    .execute();
+            List<AppUser> foundUsers = appUserStore.select(AppUserStore.username().eq(user.getUsername())).execute();
             if (!Collections.isEmpty(foundUsers)) {
                 return foundUsers.get(0);
             }
             createdUser = appUserStore.insert().values(user).returning();
-            List<Roles> roles = rolesStore.select(RolesStore.name()
-                    .eq(role)).execute();
+            List<Roles> roles = rolesStore.select(RolesStore.name().eq(role)).execute();
             if (!Collections.isEmpty(roles)) {
                 UserRoles userRoles = new UserRoles();
                 userRoles.setUserId(createdUser.getId());
