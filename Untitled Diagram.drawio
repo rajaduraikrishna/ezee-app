@@ -172,6 +172,29 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="4UoYWbGlwxpfovrO7t7e-16" value="Queue" style="shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="670" y="891" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4UoYWbGlwxpfovrO7t7e-17" style="edgeStyle=elbowEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;jettySize=auto;orthogonalLoop=1;fontSize=18;exitX=0.008;exitY=0.819;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="3a17f1ce550125da-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="743" y="744" as="sourcePoint" />
+            <mxPoint x="743" y="890" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="743" y="764" />
+              <mxPoint x="773" y="774" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4UoYWbGlwxpfovrO7t7e-18" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.834;exitY=0.508;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="4UoYWbGlwxpfovrO7t7e-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="946.5" y="873" as="sourcePoint" />
+            <mxPoint x="983" y="873" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="920" y="940" />
+              <mxPoint x="920" y="873" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
